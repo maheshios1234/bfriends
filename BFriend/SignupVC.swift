@@ -12,19 +12,22 @@ class SignupVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        contVie.layer.cornerRadius = 20
-        contVie.layer.masksToBounds = true
+        containerView.layer.cornerRadius = 20
+        containerView.layer.masksToBounds = true
         googleBtn.layer.cornerRadius = 25
-        emailStack.layer.masksToBounds = true
-        emailStack.layer.cornerRadius = 30
-        emailss.layer.masksToBounds = true
-        emailss.layer.cornerRadius = 30
+        nameStack.layer.masksToBounds = true
+        nameStack.layer.cornerRadius = 30
+        emailstack.layer.masksToBounds = true
+        emailstack.layer.cornerRadius = 30
         pwStack.layer.masksToBounds = true
         pwStack.layer.cornerRadius = 30
         googleBtn.layer.masksToBounds = true
        
         fbBtn.layer.cornerRadius = 25
         fbBtn.layer.masksToBounds = true
+        pwTxt.borderStyle = .none
+        emailTxt.borderStyle = .none
+        nameTxt.text = .none
        
         let attrs1 = [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 12), NSAttributedString.Key.foregroundColor : UIColor(red: 0.373, green: 0.588, blue: 0.992, alpha: 1)]
 
@@ -42,111 +45,58 @@ class SignupVC: UIViewController {
         
 
     }
-
-    @IBOutlet weak var passwordLbl: UILabel!
-    @IBOutlet weak var emailLbl: UILabel!
-    @IBOutlet weak var nameLbl: UILabel!
-    @IBOutlet weak var emailStack: UIStackView!
+   
+  
+    @IBOutlet weak var nameTxt: UITextField!
+  
+    @IBOutlet weak var emailTxt: UITextField!
     
+  
+    @IBOutlet weak var pwTxt: UITextField!
+    
+  
+    @IBOutlet weak var nameStack: UIStackView!
     @IBOutlet weak var pwStack: UIStackView!
-    @IBOutlet weak var emailss: UIStackView!
+    @IBOutlet weak var emailstack: UIStackView!
     @IBOutlet weak var ppLbl: UILabel!
+    @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var googleBtn: UIButton!
     
     
     
     @IBOutlet weak var fbBtn: UIButton!
-    var handle: AuthStateDidChangeListenerHandle?
-    override func viewWillAppear(_ animated: Bool) {
-        handle = Auth.auth().addStateDidChangeListener { auth, user in
-          // ...
-        }
+
+    @IBAction func backBtn(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
     }
-    override func viewWillDisappear(_ animated: Bool) {
-        Auth.auth().removeStateDidChangeListener(handle!)
-    }
- 
-    
- 
-    
-    @IBAction func LoBtn(_ sender: Any) {
+    @IBAction func LoginBtn(_ sender: Any) {
         let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
         self.navigationController?.pushViewController(secondViewController, animated: true)
         
     }
+ 
     
-    
-    func CreateUser(){
-        Auth.auth().createUser(withEmail: emailTxt.text ?? "", password: pwTxt.text ?? "") { authResult, error in
-          // ...
-        }
-    }
-    
-  
-    @IBOutlet weak var pwTxt: UITextField!
-    @IBOutlet weak var emailTxt: UITextField!
-    @IBOutlet weak var nameTxt: UITextField!
-    
-    @IBOutlet weak var contVie: UIView!
+
     
     @IBAction func signUpBtn(_ sender: Any) {
-        CreateUser()
+        Auth.auth().createUser(withEmail: (emailTxt.text ?? ""), password: (pwTxt.text ?? "")) { (result, error) in
+                    if let _eror = error {
+                        //something bad happning
+                        print(_eror.localizedDescription )
+                        UtilityClass.showAlertControllerWith(title: "Error", message: "\(String(describing: error?.localizedDescription))", onVc: self, buttons: ["OK"]) {
+                            (succes, index) in
+//                            if index == 0 { // ok button tapped
+//
+//                            }
+                        }
+                    }else{
+                        //user registered successfully
+                        UtilityClass.showAlertControllerWith(title: "Error", message: "\(String(describing: result))", onVc: self, buttons: ["OK"]) { (succes, index) in
+                           
+                        }
+                    }
+                 }
     }
-    func validation(){
-        if pwTxt.text == ""{
-            let alert = UIAlertController(title: "Alert", message: "Please provide your Password", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-                switch action.style{
-                    case .default:
-                    print("default")
-                    
-                    case .cancel:
-                    print("cancel")
-                    
-                    case .destructive:
-                    print("destructive")
-                    
-                }
-            }))
-            self.present(alert, animated: true, completion: nil)
-        }else if emailTxt.text == ""{
-            let alert = UIAlertController(title: "Alert", message: "Please Provide your Email Adress", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-                switch action.style{
-                    case .default:
-                    print("default")
-                    
-                    case .cancel:
-                    print("cancel")
-                    
-                    case .destructive:
-                    print("destructive")
-                    
-                }
-            }))
-            self.present(alert, animated: true, completion: nil)
-            
-        }else if nameTxt.text == ""{
-            let alert = UIAlertController(title: "Alert", message: "Please Provide your name", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-                switch action.style{
-                    case .default:
-                    print("default")
-                    
-                    case .cancel:
-                    print("cancel")
-                    
-                    case .destructive:
-                    print("destructive")
-                    
-                }
-            }))
-            self.present(alert, animated: true, completion: nil)
-            
-        }else{
-            let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "ResetPwVc") as! ResetPwVc
-            self.navigationController?.pushViewController(secondViewController, animated: true)
-        }
-    }
+    
     
 }

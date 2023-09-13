@@ -23,8 +23,13 @@ class forgotPwVC: UIViewController {
     
     @IBOutlet weak var emailStack: UIStackView!
     
+    @IBAction func backBtn(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
+    }
     
-   
+    @IBAction func submitBtn(_ sender: Any) {
+    }
+    
 
    
    

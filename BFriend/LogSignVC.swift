@@ -12,19 +12,21 @@ class LogSignVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
      
-        signupV.layer.cornerRadius = 23
-        signupV.layer.masksToBounds = true
-        loginV.layer.cornerRadius = 23
-        loginV.layer.masksToBounds = true
+        signupView.layer.cornerRadius = 23
+        signupView.layer.masksToBounds = true
+        loginView.layer.cornerRadius = 23
+        loginView.layer.masksToBounds = true
         
         
     }
     
  
+    @IBOutlet weak var loginView: UIView!
     
-    @IBOutlet weak var signupV: UIView!
-    @IBOutlet weak var loginV: UIView!
-    @IBOutlet weak var signBtn: UIButton!
+    @IBOutlet weak var signupView: UIView!
+   
+    @IBAction func singBtn(_ sender: Any) {
+    }
     
     @IBAction func signUpBtn(_ sender: Any) {
         let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "SignupVC") as! SignupVC
@@ -41,13 +43,4 @@ class LogSignVC: UIViewController {
 
     }
  
-    
-    //    @IBAction func loginBtn(_ sender: Any) {
-//        let vc = LoginViewController(nibName: "LoginViewController", bundle: nil)
-//        self.navigationController?.pushViewController(vc, animated: true)
-//    }
-   
-    
-  
-
 }
